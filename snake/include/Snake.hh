@@ -5,7 +5,9 @@
 
 enum Direct {
     NONE,
-    UP, DOWN, LEFT, RIGHT
+    // make it easy to check valid direction
+    UP = -1, DOWN = 1,
+    LEFT = -2, RIGHT = 2
 };
 
 class SnakePiece: public Drawable {
@@ -32,7 +34,11 @@ public:
     void rmvPiece() { body.pop(); }
 
     Direct getDirect() const { return cur_direct; }
-    void setDirect(const Direct d) { cur_direct = d; }
+    void setDirect(const Direct d) {
+        // can't go opposite direction
+        if (cur_direct + d != 0)
+            cur_direct = d;
+    }
 
     SnakePiece nextHead() {
         int row = head().getH();

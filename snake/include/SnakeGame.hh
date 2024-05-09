@@ -1,7 +1,7 @@
 #pragma once
 #include <ctime>
 #include <cstdlib>
-#include "board.hh"
+#include "Board.hh"
 #include "Snake.hh"
 
 class SnakeGame {
@@ -34,6 +34,32 @@ public:
     void processInput() {
         chtype input = board.getInput();
         // process
+        switch (input) {
+            case KEY_UP:
+            case 'w':
+                snake.setDirect(UP);
+                break;
+            case KEY_DOWN:
+            case 's':
+                snake.setDirect(DOWN);
+                break;
+            case KEY_LEFT:
+            case 'a':
+                snake.setDirect(LEFT);
+                break;
+            case KEY_RIGHT:
+            case 'd':
+                snake.setDirect(RIGHT);
+                break;
+
+            case 'p': // block input when pause
+                board.setTimeout(-1);
+                while (board.getInput() != 'p');
+                board.setTimeout(1000);
+                break;
+            case 'q': game_over = true;
+            default: break; // keep current direction
+        }
     }
     
     void updateState() {

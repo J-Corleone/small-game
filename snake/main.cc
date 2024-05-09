@@ -1,5 +1,5 @@
 #include <iostream>
-#include "include/board.hh"
+#include "include/Board.hh"
 #include "include/SnakeGame.hh"
 
 using namespace std;
