@@ -26,8 +26,9 @@ int main(int argc, char *argv[]) {
         game.redraw();
     }
 
-    getch();
     endwin();
+
+    std::cout << "Game Over\n";
 
     return 0;
 }

@@ -1,5 +1,7 @@
+/**
+ * Model
+*/
 #pragma once
-
 #include <ncurses.h>
 
 class Drawable {

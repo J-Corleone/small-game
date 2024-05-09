@@ -1,3 +1,6 @@
+/* 
+ * Controller
+*/
 #pragma once
 #include <ctime>
 #include <cstdlib>
@@ -58,12 +61,17 @@ public:
     void updateState() {
         SnakePiece next(snake.nextHead());
         // when not encounter 🍎, remove 🐍 tail.
-        if (next.getH() != apple->getH() || next.getW() != apple->getW()) {
-            SnakePiece emptyPiece(snake.tail());
-            board.add(Drawable().reEmpty(emptyPiece.getH(), emptyPiece.getW()));
-            snake.rmvPiece();
-        } else {
-            destroyApple();
+        switch (board.getCharAt(next.getH(), next.getW())) {
+            case 'O': destroyApple(); break;
+            case ' ': {
+                // in C++, unless you bracket the case, otherwise definition is invalid.
+                SnakePiece emptyPiece(snake.tail());
+                board.add(Drawable().reEmpty(emptyPiece.getH(), emptyPiece.getW()));
+                snake.rmvPiece();
+                break;
+            }
+            // others all invalid.
+            default: game_over = true; break;
         }
         mvSnake(next);
 

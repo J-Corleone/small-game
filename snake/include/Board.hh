@@ -1,5 +1,7 @@
+/*
+ * View
+*/
 #pragma once
-
 #include "Drawable.hh"
 
 class Board {
@@ -27,6 +29,9 @@ public:
     void add(const Drawable d) { addAt(d.getH(), d.getW(), d.getGoods()); }
     // index from 0
     void addAt(int h, int w, chtype ch) { mvwaddch(board_win, h, w, ch); }  // mv window add char
+    
+    chtype getCharAt(const int y, const int x) { return mvwinch(board_win, y, x); }
+
     void getEmptyCoordinate(int &h, int &w) {
         while (mvwinch(board_win, h, w) != ' ') {
             h = rand() % H;
