@@ -11,8 +11,8 @@ class SnakeGame {
 public:
     ~SnakeGame() { delete apple; }
 
-    SnakeGame(const int h, const int w):
-        game_over(false), board(Board(h, w)), apple(nullptr) {
+    SnakeGame(const int h, const int w, const int speed=300):
+        board(Board(h, w, speed)), game_over(false), apple(nullptr) {
 
         srand(time(NULL));
         board.initialize();
@@ -51,7 +51,7 @@ public:
             case 'p': // block input when pause
                 board.setTimeout(-1);
                 while (board.getInput() != 'p');
-                board.setTimeout(1000);
+                board.setTimeout(board.getTimeout());
                 break;
             case 'q': game_over = true;
             default: break; // keep current direction
@@ -62,7 +62,7 @@ public:
         SnakePiece next(snake.nextHead());
         // when not encounter 🍎, remove 🐍 tail.
         switch (board.getCharAt(next.getH(), next.getW())) {
-            case 'O': destroyApple(); break;
+            case 'O': eatApple(); break;
             case ' ': {
                 // in C++, unless you bracket the case, otherwise definition is invalid.
                 SnakePiece emptyPiece(snake.tail());
@@ -84,6 +84,7 @@ public:
     }
 
     bool isOver() const { return game_over; }
+    void Over() { board.display(); }
 
 private:
     bool game_over;
@@ -104,5 +105,5 @@ private:
         board.add(*apple);
     }
 
-    void destroyApple() { delete apple; apple = nullptr; }
+    void eatApple() { delete apple; apple = nullptr; }
 };

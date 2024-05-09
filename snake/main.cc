@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     noecho();    // dont display user input
     curs_set(0); // Also curser
 
-    SnakeGame game(BOARD_H, BOARD_W);
+    SnakeGame game(BOARD_H, BOARD_W, 100);
 
     while (!game.isOver()) {
         // 1: get input from user
@@ -25,10 +25,10 @@ int main(int argc, char *argv[]) {
         // 3: redraw
         game.redraw();
     }
-
+    game.Over();
+    while (getch() != ' '); // type ' ' to quit
+    
     endwin();
-
-    std::cout << "Game Over\n";
 
     return 0;
 }
