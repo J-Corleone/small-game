@@ -9,26 +9,19 @@ public:
     ~SnakeGame() { delete apple; }
 
     SnakeGame(const int h, const int w):
-        game_over(false), board(Board(h, w)), apple(NULL) {
+        game_over(false), board(Board(h, w)), apple(nullptr) {
 
         srand(time(NULL));
         board.initialize();
 
-        // Snake init
+        // init 🐍
         SnakePiece next(h/2, w/2);
         board.add(next);
         snake.addPiece(next);
-
-        snake.setDirect(UP);
-        next = snake.nextHead();
-        board.add(next);
-        board.add(snake.headToBody());
-        snake.addPiece(next);
-
-        next = snake.nextHead();
-        board.add(next);
-        board.add(snake.headToBody());
-        snake.addPiece(next);
+        mvSnake(snake.nextHead());
+        mvSnake(snake.nextHead());
+        // creat 🍎
+        geneApple();
     }
 
     void processInput() {
@@ -63,25 +56,19 @@ public:
     }
     
     void updateState() {
-        // generate Apple
-        if (apple == nullptr) {
-            int h, w;
-            board.getEmptyCoordinate(h, w);
-            apple = new Apple(h, w);
-            board.add(*apple);
-        }
-
         SnakePiece next(snake.nextHead());
         // when not encounter 🍎, remove 🐍 tail.
         if (next.getH() != apple->getH() || next.getW() != apple->getW()) {
             SnakePiece emptyPiece(snake.tail());
             board.add(Drawable().reEmpty(emptyPiece.getH(), emptyPiece.getW()));
             snake.rmvPiece();
+        } else {
+            destroyApple();
         }
-        
-        board.add(next);
-        board.add(snake.headToBody());
-        snake.addPiece(next);
+        mvSnake(next);
+
+        // once ate, generate Apple imm
+        if (apple == nullptr) geneApple();
     }
     
     void redraw() {
@@ -95,4 +82,19 @@ private:
     Board board;
     Apple *apple;
     Snake snake;
+
+    void mvSnake(const SnakePiece next) {
+        board.add(next);
+        board.add(snake.headToBody());
+        snake.addPiece(next);
+    }
+
+    void geneApple() {
+        int h, w;
+        board.getEmptyCoordinate(h, w);
+        apple = new Apple(h, w);
+        board.add(*apple);
+    }
+
+    void destroyApple() { delete apple; apple = nullptr; }
 };

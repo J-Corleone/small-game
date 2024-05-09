@@ -28,7 +28,7 @@ public:
 
 class Snake {
 public:
-    Snake() { cur_direct = NONE; }
+    Snake() { cur_direct = UP; } // 开局向上走
     
     void addPiece(SnakePiece piece) { body.push(piece); }
     void rmvPiece() { body.pop(); }
